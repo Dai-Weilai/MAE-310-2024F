@@ -3,7 +3,7 @@ u_exact=@(x) x.^5;
 ux_exact=@(x) 5*x.^4;
 f = @(x) -20*x.^3; % f(x) is the source
 g=1;h=0;% u=g at x=1;-u; x=h at x=0
-pp=2; % polynomial degree
+pp=3; % polynomial degree
 n_en = pp + 1;         % number of element or local nodes
 n_int=10;
 % Setup the quadrature rule
