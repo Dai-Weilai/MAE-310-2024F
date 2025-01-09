@@ -54,7 +54,7 @@ function [n_np, n_el, nodes_coords,IEN] = readMshFile(filename)
             n_el = n_el + 1;  % 每有一行元素就加 1
             new_row=zeros(1,4);
             for i =1:4
-            new_row(i)=tokens(i+1);
+            new_row(i)=tokens(6-i);
             end
             IEN(end+1, :) = new_row;
         end
