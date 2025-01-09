@@ -1,4 +1,4 @@
-function [n_np, n_el, nodes_coords] = readMshFile(filename)
+function [n_np, n_el, nodes_coords,IEN] = readMshFile(filename)
     % 打开文件
     fid = fopen(filename, 'r');
     if fid == -1
@@ -42,6 +42,7 @@ function [n_np, n_el, nodes_coords] = readMshFile(filename)
         end
     end
     % 读取元素数量 n_el
+    IEN=zeros(0,4);
     while ischar(tline)
         tline = fgetl(fid);
          if contains(tline, '$EndElements')
@@ -51,9 +52,13 @@ function [n_np, n_el, nodes_coords] = readMshFile(filename)
         % 判断是否为元素行（有 5 个数字）
         if length(tokens) == 5
             n_el = n_el + 1;  % 每有一行元素就加 1
+            new_row=zeros(1,4);
+            for i =1:4
+            new_row(i)=tokens(i+1);
+            end
+            IEN(end+1, :) = new_row;
         end
     end
-    
     % 关闭文件
     fclose(fid);
 end
