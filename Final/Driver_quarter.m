@@ -64,9 +64,16 @@ sigma_tt=sigmatt(Tx,thet,R,r);
 sigma_rt=sigmart(Tx,thet,R,r);
 
 g=0;
-fx=sigma_rr.*cos(thet).^2+sigma_tt.*sin(thet).^2+2.*sigma_rt.*sin(thet).*cos(thet);
-fy=sigma_rr.*sin(thet).^2+sigma_tt.*cos(thet).^2+2.*sigma_rt.*sin(thet).*cos(thet);
-fxy=Tx;
+% g=input('please enter the Neumann BC g!');
+
+sigma_m=(sigma_rr+sigma_tt).*0.5;
+sigma_Rad=sqrt(((sigma_rr+sigma_tt).*0.5).^2+sigma_rt.^2);
+
+fx=sigma_m+sigma_Rad;
+fy=sigma_m-sigma_Rad;
+fxy=sigma_Rad;
+
+
 % ID array
 ID = zeros(n_np,2);
 counter = 0;
@@ -206,8 +213,6 @@ for ii = 1 : n_np
     end
 end
 
-% save the solution vector and number of elements to disp with name
-% HEAT.mat
-% save("HEAT", "disp", "n_el_x", "n_el_y");
+
 
 % EOF
