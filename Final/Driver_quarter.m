@@ -11,6 +11,7 @@ Lam = (E_modulus*P_ratio)/((1+P_ratio)*(1-2*P_ratio));
     D=[2*Shear_m+Lam,Lam,0;Lam,2*Shear_m+Lam,0;0,0,Shear_m];%strain
 % end
 
+addpath("mesh\");
 % read the mesh 
 n_en   = 4;               % number of nodes in an element
 coor=zeros(500,2);
@@ -141,14 +142,14 @@ for ee = 1 : n_el
       f_ele(aa,1)=f_ele(aa,1)+Na*weight(ll)*detJ*fx(IEN(ee,aa));
       f_ele(aa,2)=f_ele(aa,2)+Na*weight(ll)*detJ*fy(IEN(ee,aa));
 
-      B=zeros(2,3);%获取B矩阵,写反了
+      B=zeros(3,2);%获取B矩阵
       for bb = 1 : n_en
         Nb = Quad(bb, xi(ll), eta(ll));
         [Nb_xi, Nb_eta] = Quad_grad(bb, xi(ll), eta(ll));
         Nb_x = (Nb_xi * dy_deta - Nb_eta * dy_dxi) / detJ;
         Nb_y = (-Nb_xi * dx_deta + Nb_eta * dx_dxi) / detJ;
-        B(2,1)=Nb_x;B(2,2)=Nb_y;B(2,3)=Nb_x;B(3,2)=Nb_y;
-        k_ele(aa,bb)=B*D*B';
+        B(1,2)=Nb_x;B(2,2)=Nb_y;B(3,2)=Nb_x;B(3,1)=Nb_y;
+        k_ele(aa,bb,:,:)=B'*D*B;
         % k_ele(aa, bb) = k_ele(aa,bb) + weight(ll) * detJ * kappa * (Na_x * Nb_x + Na_y * Nb_y);
       end % end of bb loop
     end % end of aa loop
